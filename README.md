@@ -12,7 +12,7 @@ The first paragraph should be short, stand on its own, and be entirely plaintext
 
 An entry can continue with more paragraphs, and they can use links, but the text should hold up even if the links are stripped out. It should be possible to form a rich glossary using the full text of every entry, whether or not HTML is an option in the user's environment.
 
-### Example
+### Examples
 
 The words "Referred to Committee" are shown as the status of the vast majority of bills in the House and Senate, and it sounds important, but it usually means the bill is dead.
 
@@ -28,6 +28,6 @@ In the Senate, cloture votes are often practically equivalent to passage votes.
 
 > Cloture
 
-> Before a bill can pass the Senate, 60 senators must agree to end debate through a vote on "cloture". Preventing the Senate from ending debate in order to avoid voting to pass a bill is often called a [filibuster].
+> Before a bill can pass the Senate, 60 senators must agree to end debate through a vote on "cloture". Preventing the Senate from ending debate in order to avoid voting to pass a bill is often called a[filibuster.
 
 > The 60-senator threshold for cloture votes is a Senate rule - it is not part of the Constitution. The Constitution mandates a majority vote for the passage of bills, but the Senate is allowed to set its own rules that govern the process of getting to that final vote.
