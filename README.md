@@ -32,8 +32,8 @@ In the Senate, cloture votes are often practically equivalent to passage votes.
 
 > Cloture
 
-> Before a bill can pass the Senate, 60 senators must agree to end debate through a vote on "cloture".
+> Before a bill can proceed to a final up-or-down vote in the Senate, 60 senators must agree to end debate through a vote on "cloture".
 
-> Preventing the Senate from ending debate in order to avoid voting to pass a bill is often called a[filibuster.
+> Preventing the Senate from ending debate in order to avoid voting to pass a bill is often called a [filibuster].
 
 > The 60-senator threshold for cloture votes is a Senate rule - it is not part of the Constitution. The Constitution mandates a majority vote for the passage of bills, but the Senate is allowed to set its own rules that govern the process of getting to that final vote.
