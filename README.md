@@ -8,11 +8,11 @@ Ease of understanding is the #1 priority. Precision and completeness are #2.
 
 Definitions are stored in text files, one per file.
 
-The name of the entry is at the top, followed by a sentence definition. It should be possible to form a small, light glossary by using the first sentence of every entry.
+The name of the entry is at the top, followed by a short, single sentence definition. It should be possible to form a small, light glossary by using the first sentence of every entry.
 
 A longer definition can follow, with paragraphs separated by two line breaks.
 
-Definitions can use links, but the text should hold up even if the links are stripped out. It should be possible to form a rich glossary using the full text of every entry, whether or not HTML is an option in the user's environment.
+The longer definition can use links, but the text should hold up even if the links are stripped out. It should be possible to form a rich glossary using the full text of every entry, whether or not HTML is an option in the user's environment.
 
 ### Examples
 
