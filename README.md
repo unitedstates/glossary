@@ -6,9 +6,9 @@ Ease of understanding is the #1 priority. Precision and completeness are #2.
 
 ### Guidelines
 
-Definitions are stored in text files, one per file.
+Definitions are stored in text files, one per file. The name of the entry is the filename (no extension).
 
-The name of the entry is at the top, followed by a short, single sentence definition. It should be possible to form a small, light glossary by using the first sentence of every entry.
+The first line is a short, single sentence definition. It should be possible to form a small, light glossary by using the first sentence of every entry.
 
 A longer definition can follow, with paragraphs separated by two line breaks.
 
@@ -18,7 +18,7 @@ The longer definition can use links, but the text should hold up even if the lin
 
 The words "Referred to Committee" are shown as the status of the vast majority of bills in the House and Senate, and it sounds important, but it usually means the bill is dead.
 
-> Referred to Committee
+In file "Referred to Committee":
 
 > After a bill is introduced, it is immediately sent to one or more committees for consideration approval.
 
@@ -30,7 +30,7 @@ The words "Referred to Committee" are shown as the status of the vast majority o
 
 In the Senate, cloture votes are often practically equivalent to passage votes.
 
-> Cloture
+In file "Cloture":
 
 > Before a bill can proceed to a final up-or-down vote in the Senate, 60 senators must agree to end debate through a vote on "cloture".
 
