@@ -20,7 +20,7 @@ The words "Referred to Committee" are shown as the status of the vast majority o
 
 In file "Referred to Committee":
 
-> After a bill is introduced, it is immediately sent to one or more committees for consideration approval.
+> After a bill is introduced, it is immediately sent to one or more committees for consideration and approval.
 
 > Every bill is referred to a committee, but few bills actually receive committee attention, so most bills die here. It's up to each committee to vote on whether the bill should be considered by the whole chamber.
 
