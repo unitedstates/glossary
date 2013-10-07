@@ -1,6 +1,8 @@
 {
-  "definitions": [
-    "Cloture",
-    "Sine die adjournment"
-  ]
+  "definitions": {
+    "congress": [
+      "Cloture",
+      "Sine die adjournment"
+    ]
+  }
 }
