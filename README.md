@@ -1,6 +1,6 @@
 ## A glossary for the United States
 
-A collection of pleasant, readable definitions of terms and processes in the United States. Designed for integration in various user-facing applications.
+A collection of pleasant, readable definitions of terms and processes in the United States. [Public domain](#public-domain). Designed for integration in various user-facing applications.
 
 Ease of understanding is the #1 priority. Precision and completeness are #2.
 
@@ -37,3 +37,14 @@ In file "Cloture":
 > Preventing the Senate from ending debate in order to avoid voting to pass a bill is often called a filibuster.
 
 > The 60-senator threshold for cloture votes is a Senate rule - it is not part of the Constitution. The Constitution mandates a majority vote for the passage of bills, but the Senate is allowed to set its own rules that govern the process of getting to that final vote.
+
+
+## Public domain
+
+As spelled out in [CONTRIBUTORS](CONTRIBUTORS.md):
+
+The project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived through the [CC0 1.0 Universal public domain dedication][CC0].
+
+All contributions to this project will be released under the CC0 dedication. By submitting a pull request, you are agreeing to comply with this waiver of copyright interest.
+
+[CC0]: http://creativecommons.org/publicdomain/zero/1.0/
