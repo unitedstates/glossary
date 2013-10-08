@@ -41,7 +41,7 @@ In file "Cloture":
 
 ## Public domain
 
-As spelled out in [CONTRIBUTORS](CONTRIBUTORS.md):
+As spelled out in [CONTRIBUTING](CONTRIBUTING.md):
 
 The project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived through the [CC0 1.0 Universal public domain dedication][CC0].
 
