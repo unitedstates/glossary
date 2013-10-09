@@ -14,23 +14,11 @@ A longer definition can follow, with paragraphs separated by two line breaks.
 
 The longer definition can use links, but the text should hold up even if the links are stripped out. It should be possible to form a rich glossary using the full text of every entry, whether or not HTML is an option in the user's environment.
 
-### Examples
+### For Example
 
-The words "Referred to Committee" are shown as the status of the vast majority of bills in the House and Senate, and it sounds important, but it usually means the bill is dead.
+In the Senate, cloture votes are often practically equivalent to passage votes. Even when people know what a "filibuster" is, the word "cloture" may not mean much.
 
-In file "Referred to Committee":
-
-> After a bill is introduced, it is immediately sent to one or more committees for consideration and approval.
-
-> Every bill is referred to a committee, but few bills actually receive committee attention, so most bills die here. It's up to each committee to vote on whether the bill should be considered by the whole chamber.
-
-> Almost every bill will need a committee's approval to be considered by the whole chamber. On rare occasions, a bill can bypass the committee process and be brought directly to the floor.
-
-> Bills are referred to committees by subject area. For example, a bill about wind energy investment in the House might be referred to the House Energy and Commerce Committee. If that bill involves taxes, it might also be referred to the House Appropriations Committee.
-
-In the Senate, cloture votes are often practically equivalent to passage votes.
-
-In file "Cloture":
+So, for [Cloture](definitions/congress/Cloture):
 
 > Before a bill can proceed to a final up-or-down vote in the Senate, 60 senators must agree to end debate through a vote on "cloture".
 
@@ -38,6 +26,35 @@ In file "Cloture":
 
 > The 60-senator threshold for cloture votes is a Senate rule - it is not part of the Constitution. The Constitution mandates a majority vote for the passage of bills, but the Senate is allowed to set its own rules that govern the process of getting to that final vote.
 
+
+## Glossary as data
+
+> (This is still in-progress &mdash; data isn't yet automatically published, though some is available.)
+
+The glossary automatically takes definitions contributed as prose, and publishes them as JSON files, accessible at predictable URLs on Github.
+
+For example, the definition for `definitions/congress/Cloture` is available at:
+
+> http://unitedstates.github.io/glossary/definitions/congress/Cloture.json
+
+Under the hood: whenever a contribution is accepted, Github pings a small service that reads through each contribution and transforms it into a JSON file that is pushed to the project's `gh-pages` branch.
+
+The JSON file contains the glossary in various useful forms:
+
+* `short_definition` - plaintext, contains the first sentence of the entry.
+* `long_definition` - Markdown, contains the whole entry, as entered.
+* `long_definition_text` - plaintext, contains the whole entry, stripped of links.
+* `long_definition_html` - HTML, contains the whole entry, with links transformed into HTML.
+
+The code for this service, a small Node app optimized for deployment on Heroku, is also in this repository, in the [dat branch](/unitedstates/glossary/tree/dat).
+
+## Branches
+
+This project has 3 entirely separate branches:
+
+* `master` - Project description, definitions in prose. Accepts contributions of new definitions.
+* `gh-pages` - Glossary definitions as data. Automatically synced with definitions on `master` branch. Doesn't accept contributions.
+* `dat` - Code for a small web service that manages the automatic syncing of the prose on the `master` branch to the data on the `gh-pages` branch
 
 ## Public domain
 
