@@ -1,5 +1,6 @@
-var express = require("express");
-var util = require('util');
+var express = require("express")
+	, util = require('util')
+	, config = require('./config');
 var app = express();
 app.use(express.logger());
 app.use(express.bodyParser());
@@ -23,7 +24,8 @@ app.post('/', function(request, response) {
 	if (branch != "master")
 		return;
 
-	// var masterBranchBaseUrl = "https://raw.github.com/keith5000/USGlossary/";
+	console.log("from branch: " + branch);
+	console.log(config.repository);
 
 	// for (var commitCount=0; commitCount < payload.commits.length; commitCount++) {
 	// 	if (payload.commits.added) {
