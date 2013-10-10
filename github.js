@@ -2,7 +2,8 @@
 // http://developer.github.com/v3/repos/contents/
 // cause believe it or not, no one seems to have made a Node lib that supports this
 
-var request = require("request");
+var request = require("request")
+  , util = require('util');
 
 // owner: user or organization handle
 // repo: name of repository
@@ -38,7 +39,7 @@ Github.prototype = {
     if (!callback) return;
 
     this.api("put", "/repos/:owner/:repo/contents/" + path, {
-      ref: branch,
+      branch: branch,
       content: new Buffer(content).toString("base64"),
       message: message,
       committer: {
@@ -55,7 +56,7 @@ Github.prototype = {
     if (!callback) return;
 
     this.api("put", "/repos/:owner/:repo/contents/" + path, {
-      ref: branch,
+      branch: branch,
       content: new Buffer(content).toString("base64"),
       sha: sha,
       message: message,
@@ -73,7 +74,7 @@ Github.prototype = {
     if (!callback) return;
 
     this.api("delete", "/repos/:owner/:repo/contents/" + path, {
-      ref: branch,
+      branch: branch,
       sha: sha,
       message: message,
       committer: {
@@ -84,11 +85,11 @@ Github.prototype = {
   },
 
   // fetch the README for the repo, whatever its filename
-  readme: function(callback) {
+  readme: function(branch, callback) {
     var self = this;
     if (!callback) return;
 
-    this.api("get", "/repos/:owner/:repo/readme", {}, callback);
+    this.api("get", "/repos/:owner/:repo/readme", {ref: branch}, callback);
   },
 
 
@@ -111,7 +112,14 @@ Github.prototype = {
       if (err) return callback(err);
       var data = JSON.parse(body);
 
-      // console.log(util.inspect(data));
+      if (self.debug) {
+        console.log();
+        console.log(method.toUpperCase() + ": " + url);
+        console.log(util.inspect(headers));
+        console.log(util.inspect(params));
+        console.log(util.inspect(data));
+        console.log();
+      }
 
       // content field is always base64 encoded in CRUD API
       if (data.content)
@@ -122,12 +130,6 @@ Github.prototype = {
       else
         callback(null, data);
     };
-
-    if (this.debug) {
-      console.log(url);
-      console.log(util.inspect(headers));
-      console.log(util.inspect(params));
-    }
 
     // if a GET, params are sent as a query string
     if (method == "get") request.get({url: url, qs: params, headers: headers}, respond);
