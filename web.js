@@ -8,9 +8,13 @@ var repo = new Github(
 	config.owner,
 	config.repository,
 	config.github_token,
-	config.name,
-	config.email
+	config.committer_name,
+	config.committer_email
 );
+repo.debug = true;
+
+var from_branch = config.from_branch
+	, to_branch = config.to_branch;
 
 app.use(express.logger());
 app.use(express.bodyParser());
@@ -38,7 +42,12 @@ app.post('/', function(request, response) {
 			concat(commit.added).concat(commit.modified).concat(commit.removed);
 	});
 	affected = arrayUnique(affected);
-	affected.forEach(transform);
+	affected.forEach(function(file) {
+		if (syncThis(file))
+			syncFile(file);
+		else
+			console.log("Not syncing " + file);
+	});
 });
 
 // Do the transform on a given path.
@@ -53,12 +62,61 @@ app.post('/', function(request, response) {
 //			3a) if it's there, issue an update on `to_branch`
 //			3b) if it's not there, issue a create on `to_branch`
 
-var transform = function(path, sha) {
-	console.log("checking: " + path);
-	if
+var syncFile = function(path) {
+	console.log("Checking on " + from_branch + ": " + path);
+
+	var to_path = mapPath(path);
+
+	repo.get(from_branch, path, function(err, data) {
+		if (err) console.log("Error fetching details from " + from_branch + " for: " + path);
+
+		// file is no longer on `from`branch`, delete it on `to_branch`
+		if (!data)
+			deleteFile(to_path);
+
+	});
+};
+
+//
+var deleteFile = function(path) {
+	console.log("Deleting from " + to_branch + ": " + path);
+
+	repo.get(to_branch, path, function(err, data) {
+		if (err) errorMsg(err, "get", to_branch, path);
+
+		if (!data)
+			console.log("File is already missing from " + to_branch + "???: " + path);
+		else {
+			repo.delete(to_branch, path, data.sha, "Deleting " + path, function(err, data) {
+				if (err) errorMsg(err, "delete", to_branch, path);
+				if (!data)
+					console.log("File is suddenly missing from " + to_branch + "???: " + path);
+				else
+					console.log("Deleted.");
+			})
+		}
+
+	});
+};
+
+var syncTo = function(path) {
+
 };
 
 
+// rule for whether or not a path should be synced
+var syncThis = function(path) {
+	return (path.indexOf("definitions/") == 0);
+}
+
+// rule for taking a path from from_branch and mapping it to to_branch
+var mapPath = function(path) {
+	return path + ".json";
+}
+
+var errorMsg = function(err, action, branch, path) {
+	console.log("[" + action + "][" + branch + "][" + path + "] Error: " + err)
+};
 
 // uniq-ify an array
 var arrayUnique = function(a) {
