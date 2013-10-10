@@ -4,7 +4,14 @@ var express = require("express")
 	, Github = require('./github')
   , app = express();
 
-Github.token = config.github_token;
+var repo = new Github(
+	config.owner,
+	config.repository,
+	config.github_token,
+	config.name,
+	config.email
+);
+
 app.use(express.logger());
 app.use(express.bodyParser());
 app.get('/', function(request, response) {response.send('You can hear my heart beat!');});
@@ -21,7 +28,7 @@ app.post('/', function(request, response) {
 
 	// only care about commits to the master branch
 	var branch = payload.ref.split("/").slice(-1)[0];
-	if (branch != "master")
+	if (branch != config.from_branch)
 		return;
 
 	// collect every path mentioned that was added, modified, or removed in any commit
