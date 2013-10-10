@@ -30,7 +30,11 @@ Github.prototype = {
       branch: branch
     }, function(err, data) {
       if (err) return callback(err);
-      callback(null, data);
+
+      if (data.message == "Not Found" && data.documentation_url)
+        callback(null, null);
+      else
+        callback(null, data);
     });
   },
 
@@ -75,6 +79,26 @@ Github.prototype = {
     });
   },
 
+  // Update a file in the repo that has the given SHA,
+  // on a given branch, with the given content and a commit.
+  delete: function(branch, path, sha, message, callback) {
+    var self = this;
+    if (!callback) return;
+
+    this.api("delete", "/repos/:owner/:repo/contents/" + path, {
+      branch: branch,
+      sha: sha,
+      message: message,
+      committer: {
+        name: this.name,
+        email: this.email
+      }
+    }, function(err, data) {
+      if (err) callback(err);
+      else callback(null, data);
+    });
+  },
+
   // fetch the README for the repo, whatever its filename
   readme: function(callback) {
     var self = this;
@@ -90,6 +114,7 @@ Github.prototype = {
   // workhorse API request helper
   api: function(method, path, params, callback) {
     var self = this;
+    if (method == "delete") method = "del"; // request lib uses 'del'
     if (!callback) return;
     if (!params) params = {};
 
