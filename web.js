@@ -77,6 +77,9 @@ var syncFile = function(path) {
       // file is no longer on `from`branch`, delete it on `to_branch`
       if (!fromData && toData)
         deleteFile(to_path, toData);
+      else if (fromData && !toData)
+        createFile(to_path, fromData);
+      //
       else if (!fromData && !toData) {
         console.log("File is already missing from " + to_branch + "???: " + path);
       }
@@ -87,10 +90,10 @@ var syncFile = function(path) {
 
 
 // delete a file on `to_branch`
-var deleteFile = function(path, data) {
+var deleteFile = function(path, to) {
   console.log("Deleting from " + to_branch + ": " + path);
 
-  repo.delete(to_branch, path, data.sha, "Deleting " + path, function(err, data) {
+  repo.delete(to_branch, path, to.sha, "Deleting " + path, function(err, data) {
     if (err) errorMsg(err, "delete", to_branch, path);
     if (!data)
       console.log("File is suddenly missing from " + to_branch + "???: " + path);
@@ -98,6 +101,22 @@ var deleteFile = function(path, data) {
       console.log("Deleted.");
   })
 };
+
+// create a file on `to_branch`
+var createFile = function(path, from) {
+  console.log("Creating on " + to_branch + ": " + path);
+
+  var toContent = transformContent(from.content);
+
+  repo.create(to_branch, path, toContent, "Creating " + path, function(err, data) {
+    if (err) errorMsg(err, "create", to_branch, path);
+    if (!data)
+      console.log("Couldn't create on " + to_branch + "???: " + path);
+    else
+      console.log("Created, commit sha " + data.commit.sha);
+  });
+}
+
 
 
 // rule for whether or not a path should be synced
@@ -108,6 +127,11 @@ var syncThis = function(path) {
 // rule for taking a path from from_branch and mapping it to to_branch
 var mapPath = function(path) {
   return path + ".json";
+}
+
+// rule for transforming content from `from_branch` for syncing to `to_branch`
+var transformContent = function(content) {
+  return JSON.stringify({content: content.trim()});
 }
 
 var errorMsg = function(err, action, branch, path) {
