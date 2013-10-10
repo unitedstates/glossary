@@ -1,5 +1,4 @@
 module.exports = {
-  "github_client_id": "",
-  "github_client_secret": "",
+  "github_token": "",
   "repository": "unitedstates/glossary"
 }
