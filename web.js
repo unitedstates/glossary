@@ -79,7 +79,8 @@ var syncFile = function(path) {
         deleteFile(to_path, toData);
       else if (fromData && !toData)
         createFile(to_path, fromData);
-      //
+      else if (fromData && toData)
+        updateFile(to_path, fromData, toData);
       else if (!fromData && !toData) {
         console.log("File is already missing from " + to_branch + "???: " + path);
       }
@@ -117,6 +118,20 @@ var createFile = function(path, from) {
   });
 }
 
+// update a file on `to_branch` using content from `from_branch`
+var updateFile = function(path, from, to) {
+  console.log("Updating on " + to_branch + ": " + path);
+
+  var toContent = transformContent(from.content);
+
+  repo.update(to_branch, path, toContent, to.sha, "Updating " + path, function(err, data) {
+    if (err) errorMsg(err, "update", to_branch, path);
+    if (!data)
+      console.log("Couldn't upate on " + to_branch + "???: " + path);
+    else
+      console.log("Updated, commit sha " + data.commit.sha);
+  });
+}
 
 
 // rule for whether or not a path should be synced
