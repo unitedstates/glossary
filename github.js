@@ -19,7 +19,17 @@ Github.prototype = {
 
     this.api("get", "/repos/:owner/:repo/readme", {}, function(err, data) {
       if (err) return callback(err);
-      callback(null, data.content);
+      callback(null, data);
+    });
+  },
+
+  get: function(path, callback) {
+    var self = this;
+    if (!callback) return;
+
+    this.api("get", "/repos/:owner/:repo/contents/" + path, {}, function(err, data) {
+      if (err) return callback(err);
+      callback(null, data);
     });
   },
 
@@ -30,6 +40,25 @@ Github.prototype = {
     this.api("put", "/repos/:owner/:repo/contents/" + path, {
       branch: branch,
       content: new Buffer(content).toString("base64"),
+      message: message,
+      committer: {
+        name: this.name,
+        email: this.email
+      }
+    }, function(err, data) {
+      if (err) callback(err);
+      else callback(null, data);
+    });
+  },
+
+  update: function(branch, path, content, sha, message, callback) {
+    var self = this;
+    if (!callback) return;
+
+    this.api("put", "/repos/:owner/:repo/contents/" + path, {
+      branch: branch,
+      content: new Buffer(content).toString("base64"),
+      sha: sha,
       message: message,
       committer: {
         name: this.name,
@@ -67,8 +96,11 @@ Github.prototype = {
       callback(null, data);
     };
 
-    console.log(url);
-    console.log(JSON.stringify(headers));
+    if (this.debug) {
+      console.log(url);
+      console.log(util.inspect(headers));
+      console.log(util.inspect(params));
+    }
 
     // if a GET, params is sent as a query string
     if (method == "get") request.get({url: url, qs: params, headers: headers}, respond);
