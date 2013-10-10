@@ -41,14 +41,21 @@ app.post('/', function(request, response) {
 	affected.forEach(transform);
 });
 
-// do the transform on a given path -
-//  1) get the current state of the file in Github
-//  2a) if it's been removed, issue a delete on gh-pages
-//  2b) if it's been added, issue a create on gh-pages
-//  2c) if it's been modified, issue an update on gh-pages
+// Do the transform on a given path.
+//
+// It's not relevant to look at whether the file was removed/modified/etc
+// in any particular commit. Instead, figure out their current state in the
+// from_branch, and sync the to_branch to meet that state.
+//
+//  1) get the current state of the file on the `from_branch`
+// 	  2a) if it's not there, issue a delete on `to_branch`
+//    2b) if it's there, check the `to_branch` for it
+//			3a) if it's there, issue an update on `to_branch`
+//			3b) if it's not there, issue a create on `to_branch`
+
 var transform = function(path, sha) {
 	console.log("checking: " + path);
-
+	if
 };
 
 

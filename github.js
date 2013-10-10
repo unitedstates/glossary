@@ -20,26 +20,22 @@ var Github = function(owner, repo, token, name, email) {
 };
 
 Github.prototype = {
-  readme: function(callback) {
+
+  // Get a file in the repo, on a given branch.
+  get: function(branch, path, callback) {
     var self = this;
     if (!callback) return;
 
-    this.api("get", "/repos/:owner/:repo/readme", {}, function(err, data) {
+    this.api("get", "/repos/:owner/:repo/contents/" + path, {
+      branch: branch
+    }, function(err, data) {
       if (err) return callback(err);
       callback(null, data);
     });
   },
 
-  get: function(path, callback) {
-    var self = this;
-    if (!callback) return;
-
-    this.api("get", "/repos/:owner/:repo/contents/" + path, {}, function(err, data) {
-      if (err) return callback(err);
-      callback(null, data);
-    });
-  },
-
+  // Create a file in the repo, on a given branch,
+  // with the given content and a commit.
   create: function(branch, path, content, message, callback) {
     var self = this;
     if (!callback) return;
@@ -58,6 +54,8 @@ Github.prototype = {
     });
   },
 
+  // Update a file in the repo that has the given SHA,
+  // on a given branch, with the given content and a commit.
   update: function(branch, path, content, sha, message, callback) {
     var self = this;
     if (!callback) return;
@@ -77,6 +75,19 @@ Github.prototype = {
     });
   },
 
+  // fetch the README for the repo, whatever its filename
+  readme: function(callback) {
+    var self = this;
+    if (!callback) return;
+
+    this.api("get", "/repos/:owner/:repo/readme", {}, function(err, data) {
+      if (err) return callback(err);
+      callback(null, data);
+    });
+  },
+
+
+  // workhorse API request helper
   api: function(method, path, params, callback) {
     var self = this;
     if (!callback) return;
