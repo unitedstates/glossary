@@ -1,15 +1,15 @@
 var express = require("express")
 	, util = require('util')
-	, config = require('./config');
-var app = express();
+	, config = require('./config')
+	, Github = require('./github')
+  , app = express();
+
+Github.token = config.github_token;
 app.use(express.logger());
 app.use(express.bodyParser());
+app.get('/', function(request, response) {response.send('You can hear my heart beat!');});
 
-
-// heartbeat
-app.get('/', function(request, response) {response.send('Hello World!');});
-
-
+// endpoint to run the transform on any modified files
 app.post('/', function(request, response) {
 	if (!request || !request.body || !request.body.payload) {
 		console.log("No payload specified.");
@@ -17,33 +17,52 @@ app.post('/', function(request, response) {
 	}
 
 	var payload = JSON.parse(request.body.payload);
-	console.log(util.inspect(payload));
+	// console.log(util.inspect(payload));
 
 	// only care about commits to the master branch
 	var branch = payload.ref.split("/").slice(-1)[0];
 	if (branch != "master")
 		return;
 
-	console.log("from branch: " + branch);
-	console.log(config.repository);
+	// collect every path mentioned that was added, modified, or removed in any commit
+	// key is path, should point to most recent SHA (depends on going newest to oldest)
+	var affected = {};
+	payload.commits.reverse().forEach(function(commit) {
+		var affectedHere = [].
+			concat(commit.added).concat(commit.modified).concat(commit.removed);
+		var affectedHere = arrayUnique(affectedHere);
+		affectedHere.forEach(function(path) {
+			if (!affected[path])
+				affected[path] = commit.id;
+		})
+	});
 
-	// for (var commitCount=0; commitCount < payload.commits.length; commitCount++) {
-	// 	if (payload.commits.added) {
-	// 		for (var addedCount=0; addedCount < payload.commits.added.length; addedCount++) {
-	// 			var rawFileUrl = masterBranchBaseUrl + payload.commits.added[addedCount];
-	// 			console.log("Added url: " + rawFileUrl);
-	// 		}
-	// 	}
+	console.log(affected);
 
-	// 	if (payload.commits.modified) {
-	// 		for (var modifiedCount=0; modifiedCount < payload.commits.modified.length; modifiedCount++) {
-	// 			var rawFileUrl = masterBranchBaseUrl + payload.commits.modified[modifiedCount];
-	// 			console.log("Modified url: " + rawFileUrl);
-	// 		}
-	// 	}
-	// }
-
+	Object.keys(affected).forEach(function(path) {transform(path, affected[path]);});
 });
+
+// do the transform on a given path -
+//  1) get the current state of the file in Github
+//  2a) if it's been removed, issue a delete on gh-pages
+//  2b) if it's been added, issue a create on gh-pages
+//  2c) if it's been modified, issue an update on gh-pages
+var transform = function(path, sha) {
+	console.log("checking: " path);
+
+};
+
+
+
+// uniq-ify an array
+var arrayUnique = function(a) {
+    return a.reduce(function(p, c) {
+        if (p.indexOf(c) < 0) p.push(c);
+        return p;
+    }, []);
+};
+
+
 
 var port = process.env.PORT || 5000;
 app.listen(port, function() {console.log("Now listening on port " + port + ".");});
