@@ -55,7 +55,7 @@ app.post('/', function(request, response) {
 //  2b) if it's been added, issue a create on gh-pages
 //  2c) if it's been modified, issue an update on gh-pages
 var transform = function(path, sha) {
-	console.log("checking: " path);
+	console.log("checking: " + path);
 
 };
 

@@ -4,6 +4,13 @@
 
 var request = require("request");
 
+// owner: user or organization handle
+// repo: name of repository
+// token: OAuth token generated inside Github web UI, settings per-user/org
+// name: full (first and last) name to associate with any commits
+// email: email address to associate with any commits
+//
+// set the `debug` property after initialization to turn on extra console output.
 var Github = function(owner, repo, token, name, email) {
   this.owner = owner;
   this.repo = repo;
@@ -102,10 +109,10 @@ Github.prototype = {
       console.log(util.inspect(params));
     }
 
-    // if a GET, params is sent as a query string
+    // if a GET, params are sent as a query string
     if (method == "get") request.get({url: url, qs: params, headers: headers}, respond);
 
-    // otherwise, params is encoded as JSON and sent as a form body
+    // otherwise, params are encoded as JSON and sent as a form body
     else {
       headers["Content-type"] = "application/x-www-form-urlencoded";
       request[method]({url: url, body: JSON.stringify(params), headers: headers}, respond);
