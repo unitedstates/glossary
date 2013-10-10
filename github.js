@@ -27,15 +27,8 @@ Github.prototype = {
     if (!callback) return;
 
     this.api("get", "/repos/:owner/:repo/contents/" + path, {
-      branch: branch
-    }, function(err, data) {
-      if (err) return callback(err);
-
-      if (data.message == "Not Found" && data.documentation_url)
-        callback(null, null);
-      else
-        callback(null, data);
-    });
+      ref: branch
+    }, callback);
   },
 
   // Create a file in the repo, on a given branch,
@@ -45,17 +38,14 @@ Github.prototype = {
     if (!callback) return;
 
     this.api("put", "/repos/:owner/:repo/contents/" + path, {
-      branch: branch,
+      ref: branch,
       content: new Buffer(content).toString("base64"),
       message: message,
       committer: {
         name: this.name,
         email: this.email
       }
-    }, function(err, data) {
-      if (err) callback(err);
-      else callback(null, data);
-    });
+    }, callback);
   },
 
   // Update a file in the repo that has the given SHA,
@@ -65,7 +55,7 @@ Github.prototype = {
     if (!callback) return;
 
     this.api("put", "/repos/:owner/:repo/contents/" + path, {
-      branch: branch,
+      ref: branch,
       content: new Buffer(content).toString("base64"),
       sha: sha,
       message: message,
@@ -73,10 +63,7 @@ Github.prototype = {
         name: this.name,
         email: this.email
       }
-    }, function(err, data) {
-      if (err) callback(err);
-      else callback(null, data);
-    });
+    }, callback);
   },
 
   // Update a file in the repo that has the given SHA,
@@ -86,17 +73,14 @@ Github.prototype = {
     if (!callback) return;
 
     this.api("delete", "/repos/:owner/:repo/contents/" + path, {
-      branch: branch,
+      ref: branch,
       sha: sha,
       message: message,
       committer: {
         name: this.name,
         email: this.email
       }
-    }, function(err, data) {
-      if (err) callback(err);
-      else callback(null, data);
-    });
+    }, callback);
   },
 
   // fetch the README for the repo, whatever its filename
@@ -104,10 +88,7 @@ Github.prototype = {
     var self = this;
     if (!callback) return;
 
-    this.api("get", "/repos/:owner/:repo/readme", {}, function(err, data) {
-      if (err) return callback(err);
-      callback(null, data);
-    });
+    this.api("get", "/repos/:owner/:repo/readme", {}, callback);
   },
 
 
@@ -136,7 +117,10 @@ Github.prototype = {
       if (data.content)
         data.content = new Buffer(data.content, "base64").toString("ascii");
 
-      callback(null, data);
+      if (data.message == "Not Found" && data.documentation_url)
+        callback(null, null);
+      else
+        callback(null, data);
     };
 
     if (this.debug) {
