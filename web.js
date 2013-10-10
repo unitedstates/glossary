@@ -2,6 +2,7 @@ var express = require("express")
   , util = require('util')
   , config = require('./config')
   , Github = require('./github')
+  , Glossary = require('./glossary')
   , app = express();
 
 var repo = new Github(
@@ -107,7 +108,7 @@ var deleteFile = function(path, to) {
 var createFile = function(path, from) {
   console.log("Creating on " + to_branch + ": " + path);
 
-  var toContent = transformContent(from.content);
+  var toContent = Glossary.transform(from.content);
 
   repo.create(to_branch, path, toContent, "Creating " + path, function(err, data) {
     if (err) errorMsg(err, "create", to_branch, path);
@@ -122,7 +123,7 @@ var createFile = function(path, from) {
 var updateFile = function(path, from, to) {
   console.log("Updating on " + to_branch + ": " + path);
 
-  var toContent = transformContent(from.content);
+  var toContent = Glossary.transform(from.content);
 
   repo.update(to_branch, path, toContent, to.sha, "Updating " + path, function(err, data) {
     if (err) errorMsg(err, "update", to_branch, path);
@@ -142,11 +143,6 @@ var syncThis = function(path) {
 // rule for taking a path from from_branch and mapping it to to_branch
 var mapPath = function(path) {
   return path + ".json";
-}
-
-// rule for transforming content from `from_branch` for syncing to `to_branch`
-var transformContent = function(content) {
-  return JSON.stringify({content: content.trim()});
 }
 
 var errorMsg = function(err, action, branch, path) {

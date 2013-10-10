@@ -7,7 +7,7 @@ var request = require("request")
 
 // owner: user or organization handle
 // repo: name of repository
-// token: OAuth token generated inside Github web UI, settings per-user/org
+// token: OAuth token generated inside GitHub web UI, settings per-user/org
 // name: full (first and last) name to associate with any commits
 // email: email address to associate with any commits
 //
