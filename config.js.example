@@ -11,5 +11,7 @@ module.exports = {
 
   // committer name and email
   name: "",
-  email: ""
+  email: "",
+
+  port: 5000
 }

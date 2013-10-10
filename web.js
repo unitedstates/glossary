@@ -32,21 +32,13 @@ app.post('/', function(request, response) {
 		return;
 
 	// collect every path mentioned that was added, modified, or removed in any commit
-	// key is path, should point to most recent SHA (depends on going newest to oldest)
-	var affected = {};
-	payload.commits.reverse().forEach(function(commit) {
-		var affectedHere = [].
+	var affected = [];
+	payload.commits.forEach(function(commit) {
+		affected = affected.
 			concat(commit.added).concat(commit.modified).concat(commit.removed);
-		var affectedHere = arrayUnique(affectedHere);
-		affectedHere.forEach(function(path) {
-			if (!affected[path])
-				affected[path] = commit.id;
-		})
 	});
-
-	console.log(affected);
-
-	Object.keys(affected).forEach(function(path) {transform(path, affected[path]);});
+	affected = arrayUnique(affected);
+	affected.forEach(transform);
 });
 
 // do the transform on a given path -
@@ -63,13 +55,13 @@ var transform = function(path, sha) {
 
 // uniq-ify an array
 var arrayUnique = function(a) {
-    return a.reduce(function(p, c) {
-        if (p.indexOf(c) < 0) p.push(c);
-        return p;
-    }, []);
+  return a.reduce(function(p, c) {
+    if (p.indexOf(c) < 0) p.push(c);
+    return p;
+  }, []);
 };
 
 
 
-var port = process.env.PORT || 5000;
+var port = process.env.PORT || config.port || 5000;
 app.listen(port, function() {console.log("Now listening on port " + port + ".");});
