@@ -1,3 +1,4 @@
 scripts/definitions.*
 scripts/config.yml
 .DS_Store
+/config.js
