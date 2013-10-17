@@ -7,6 +7,7 @@ var util = require('util'),
 
 var Glossary = {
   transform: function(definition) {
+    definition = definition.trim();
     var short_definition = definition.split("\n\n")[0];
     var long_html = marked(definition);
     var long_text = S(long_html).stripTags().s.replace(/\n/g, "\n\n");
