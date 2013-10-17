@@ -17,6 +17,8 @@ var express = require("express"),
     util = require('util'),
     Github = require('./github'),
     Glossary = require('./glossary'),
+    async = require('async'),
+    sleep = require('sleep'),
     app = express();
 
 var repo = new Github(
@@ -57,12 +59,7 @@ app.post('/', function(request, response) {
   });
   affected = arrayUnique(affected);
 
-  affected.forEach(function(file) {
-    if (syncThis(file))
-      syncFile(file);
-    else
-      console.log("Not syncing " + file);
-  });
+  syncFiles(affected);
 });
 
 app.get('/refresh', function(request, response) {
@@ -76,12 +73,39 @@ app.get('/refresh', function(request, response) {
     if (Object.prototype.toString.call(files) !== '[object Array]')
       files = [files];
 
-    files.forEach(function(file) {
-      syncFile(file.path);
-    });
+    // turn into an array of paths
+    var paths = [];
+    files.forEach(function(file) {paths[paths.length] = file.path;});
+
+    // takes care of sync/sleep/etc
+    syncFiles(paths);
+
     response.send("Kicked off updating for " + files.length + " files.");
   });
 });
+
+
+// Given an array of files, run sync on each of them.
+//
+// Run the sync in synchronous sequence, with a pause between,
+// until Github resolves an acknowledged internal race condition bug.
+var syncFiles = function(files) {
+  async.eachSeries(files, function(file, done) {
+
+    // temporary workaround: sleep synchronously
+    var delay = 1;
+    console.log("Sleeping for " + delay + "s.");
+    sleep.sleep(delay);
+
+    if (syncThis(file))
+      syncFile(file, done);
+    else
+      console.log("Not syncing " + file);
+  }, function(err) {
+    if (err) return console.log("Error syncing file! " + err);
+    console.log("Done syncing " + files.length + " files.");
+  });
+}
 
 // Do the transform on a given path.
 //
@@ -96,7 +120,7 @@ app.get('/refresh', function(request, response) {
 //    3c) if it's on `from` and on `to`,         issue an update to `to_branch`
 //    3d) if it's not on either `from or `to`,   i hate everything
 
-var syncFile = function(path) {
+var syncFile = function(path, done) {
   console.log("Checking on " + from_branch + ": " + path);
 
   var to_path = mapPath(path);
@@ -109,11 +133,11 @@ var syncFile = function(path) {
 
       // file is no longer on `from`branch`, delete it on `to_branch`
       if (!fromData && toData)
-        deleteFile(to_path, toData);
+        deleteFile(to_path, toData, done);
       else if (fromData && !toData)
-        createFile(to_path, fromData);
+        createFile(to_path, fromData, done);
       else if (fromData && toData)
-        updateFile(to_path, fromData, toData);
+        updateFile(to_path, fromData, toData, done);
       else if (!fromData && !toData) {
         console.log("File is already missing from " + to_branch + "???: " + path);
       }
@@ -124,7 +148,7 @@ var syncFile = function(path) {
 
 
 // delete a file on `to_branch`
-var deleteFile = function(path, to) {
+var deleteFile = function(path, to, done) {
   console.log("Deleting from " + to_branch + ": " + path);
 
   repo.delete(to_branch, path, to.sha, "Deleting " + path, function(err, data) {
@@ -133,16 +157,19 @@ var deleteFile = function(path, to) {
       console.log("File is suddenly missing from " + to_branch + "???: " + path);
     else
       console.log("Deleted.");
+
+    done();
   })
 };
 
 // create a file on `to_branch`
-var createFile = function(path, from) {
+var createFile = function(path, from, done) {
   console.log("Creating on " + to_branch + ": " + path);
 
   var toContent = Glossary.transform(from.content);
 
   repo.create(to_branch, path, toContent, "Creating " + path, function(err, data) {
+
     if (err) errorMsg(err, "create", to_branch, path);
     if (!data)
       console.log("Couldn't create on " + to_branch + "???: " + path);
@@ -152,11 +179,13 @@ var createFile = function(path, from) {
       else
         console.log("Problem creating: " + util.inspect(data));
     }
+
+    done();
   });
 }
 
 // update a file on `to_branch` using content from `from_branch`
-var updateFile = function(path, from, to) {
+var updateFile = function(path, from, to, done) {
   console.log("Updating on " + to_branch + ": " + path);
 
   var toContent = Glossary.transform(from.content);
@@ -171,6 +200,7 @@ var updateFile = function(path, from, to) {
       else
         console.log("Problem updating: " + util.inspect(data));
     }
+    done();
   });
 }
 

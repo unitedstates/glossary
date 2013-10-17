@@ -6,7 +6,9 @@
     "marked": "*",
     "cheerio": "*",
     "request": "*",
-    "string": "~1.6.0"
+    "string": "*",
+    "async": "*",
+    "sleep": "*"
   },
   "engines": {
     "node": "0.10.x",
