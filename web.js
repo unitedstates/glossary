@@ -9,8 +9,8 @@ else {
   config.repository = process.env.REPOSITORY;
   config.committer_name = process.env.COMMITTER_NAME;
   config.committer_email = process.env.COMMITTER_EMAIL;
-  config.from_branch = process.env.FROM_BRANCH;
-  config.to_branch = process.env.TO_BRANCH;
+  config.from_branch = process.env.FROM_BRANCH || 'master';
+  config.to_branch = process.env.TO_BRANCH || 'gh-pages';
 }
 
 var express = require("express"),
