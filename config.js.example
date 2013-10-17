@@ -2,16 +2,16 @@ module.exports = {
   // OAuth token, generated using Github web UI
   github_token: "",
 
+  // committer name and email
+  committer_name: "",
+  committer_email: "",
+
   // owner can be organization or username
   owner: "unitedstates",
   repository: "glossary",
 
   from_branch: "master",
   to_branch: "gh-pages",
-
-  // committer name and email
-  name: "",
-  email: "",
 
   port: 5000
 }

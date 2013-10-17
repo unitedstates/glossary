@@ -1,9 +1,21 @@
-var express = require("express")
-  , util = require('util')
-  , config = require('./config')
-  , Github = require('./github')
-  , Glossary = require('./glossary')
-  , app = express();
+var config;
+if (fs.existsSync("./config.js"))
+  config = require('./config');
+else {
+  config.github_token = process.env.GITHUB_TOKEN;
+  config.owner = process.env.OWNER;
+  config.repository = process.env.REPOSITORY;
+  config.committer_name = process.env.COMMITTER_NAME;
+  config.committer_email = process.env.COMMITTER_EMAIL;
+  config.from_branch = process.env.FROM_BRANCH;
+  config.to_branch = process.env.TO_BRANCH;
+}
+
+var express = require("express"),
+    util = require('util'),
+    Github = require('./github'),
+    Glossary = require('./glossary'),
+    app = express();
 
 var repo = new Github(
   config.owner,
@@ -12,7 +24,6 @@ var repo = new Github(
   config.committer_name,
   config.committer_email
 );
-repo.debug = true;
 
 var from_branch = config.from_branch
   , to_branch = config.to_branch;
