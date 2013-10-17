@@ -1,4 +1,6 @@
-var config;
+var fs = require('fs'),
+    config = {};
+
 if (fs.existsSync("./config.js"))
   config = require('./config');
 else {
