@@ -8,7 +8,8 @@
     "request": "*",
     "string": "*",
     "async": "*",
-    "sleep": "*"
+    "sleep": "*",
+    "extend": "*"
   },
   "engines": {
     "node": "0.10.x",
