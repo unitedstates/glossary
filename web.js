@@ -43,11 +43,30 @@ app.post('/', function(request, response) {
       concat(commit.added).concat(commit.modified).concat(commit.removed);
   });
   affected = arrayUnique(affected);
+
   affected.forEach(function(file) {
     if (syncThis(file))
       syncFile(file);
     else
       console.log("Not syncing " + file);
+  });
+});
+
+app.get('/refresh', function(request, response) {
+  var path = request.param("path");
+  if (!path) return response.send("No 'path' provided.");
+
+  repo.get(from_branch, path, function(err, files) {
+    if (err) return response.send("Error looking up path.");
+    else if (!files) return response.send("No files found.");
+
+    if (Object.prototype.toString.call(files) !== '[object Array]')
+      files = [files];
+
+    files.forEach(function(file) {
+      syncFile(file.path);
+    });
+    response.send("Kicked off updating for " + files.length + " files.");
   });
 });
 
@@ -114,8 +133,12 @@ var createFile = function(path, from) {
     if (err) errorMsg(err, "create", to_branch, path);
     if (!data)
       console.log("Couldn't create on " + to_branch + "???: " + path);
-    else
-      console.log("Created, commit sha " + data.commit.sha);
+    else {
+      if (data.commit)
+        console.log("Created, commit sha " + data.commit.sha);
+      else
+        console.log("Problem creating: " + util.inspect(data));
+    }
   });
 }
 
@@ -129,8 +152,12 @@ var updateFile = function(path, from, to) {
     if (err) errorMsg(err, "update", to_branch, path);
     if (!data)
       console.log("Couldn't upate on " + to_branch + "???: " + path);
-    else
-      console.log("Updated, commit sha " + data.commit.sha);
+    else {
+      if (data.commit)
+        console.log("Updated, commit sha " + data.commit.sha);
+      else
+        console.log("Problem updating: " + util.inspect(data));
+    }
   });
 }
 
