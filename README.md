@@ -27,9 +27,7 @@ So, for [Cloture](definitions/congress/Cloture):
 > The 60-senator threshold for cloture votes is a Senate rule - it is not part of the Constitution. The Constitution mandates a majority vote for the passage of bills, but the Senate is allowed to set its own rules that govern the process of getting to that final vote.
 
 
-## Glossary as data
-
-> (This is still in-progress &mdash; data isn't yet automatically published, though some is available.)
+### Glossary as data
 
 The glossary automatically takes definitions contributed as prose, and publishes them as JSON files, accessible at predictable URLs on Github.
 
@@ -48,13 +46,67 @@ The JSON file contains the glossary in various useful forms:
 
 The code for this service, a small Node app optimized for deployment on Heroku, is also in this repository, in the [dat branch](/unitedstates/glossary/tree/dat).
 
-## Branches
+### Branches
 
 This project has 3 entirely separate branches:
 
 * `master` - Project description, definitions in prose. Accepts contributions of new definitions.
 * `gh-pages` - Glossary definitions as data. Automatically synced with definitions on `master` branch. Doesn't accept contributions.
 * `dat` - Code for a small web service that manages the automatic syncing of the prose on the `master` branch to the data on the `gh-pages` branch
+
+### Discovering existing definitions
+
+You can use the Github Repo Contents API to easily introspect on what definitions are available, and how the `gh-pages` branch is laid out. These are public URLs, you don't need to authenticate with Github.
+
+This URL lists the main directories definitions are sorted into:
+
+```
+https://api.github.com/repos/unitedstates/glossary/contents/definitions?ref=gh-pages
+```
+
+And this this URL lists all the definitions in the `congress` directory:
+
+```
+https://api.github.com/repos/unitedstates/glossary/contents/definitions/congress?ref=gh-pages
+```
+
+In both cases, you'll get an array of results, where each result's `name` field will tell you what definitions are available. An example of partof the response you might see for `definitions/congress`:
+
+```json
+[
+  {
+    "name": "Adjourn.json",
+    "path": "definitions/congress/Adjourn.json",
+    "sha": "797db0bfd2be0d775383e7783ba95639cd9fa7f5",
+    "size": 398,
+    "url": "https://api.github.com/repos/unitedstates/glossary/contents/definitions/congress/Adjourn.json?ref=gh-pages",
+    "html_url": "https://github.com/unitedstates/glossary/blob/gh-pages/definitions/congress/Adjourn.json",
+    "git_url": "https://api.github.com/repos/unitedstates/glossary/git/blobs/797db0bfd2be0d775383e7783ba95639cd9fa7f5",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/unitedstates/glossary/contents/definitions/congress/Adjourn.json?ref=gh-pages",
+      "git": "https://api.github.com/repos/unitedstates/glossary/git/blobs/797db0bfd2be0d775383e7783ba95639cd9fa7f5",
+      "html": "https://github.com/unitedstates/glossary/blob/gh-pages/definitions/congress/Adjourn.json"
+    }
+  },
+  {
+    "name": "Amendment.json",
+    "path": "definitions/congress/Amendment.json",
+    "sha": "17536f495a23cfbcb9f3a93e46e306ceae1ca7c9",
+    "size": 618,
+    "url": "https://api.github.com/repos/unitedstates/glossary/contents/definitions/congress/Amendment.json?ref=gh-pages",
+    "html_url": "https://github.com/unitedstates/glossary/blob/gh-pages/definitions/congress/Amendment.json",
+    "git_url": "https://api.github.com/repos/unitedstates/glossary/git/blobs/17536f495a23cfbcb9f3a93e46e306ceae1ca7c9",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/unitedstates/glossary/contents/definitions/congress/Amendment.json?ref=gh-pages",
+      "git": "https://api.github.com/repos/unitedstates/glossary/git/blobs/17536f495a23cfbcb9f3a93e46e306ceae1ca7c9",
+      "html": "https://github.com/unitedstates/glossary/blob/gh-pages/definitions/congress/Amendment.json"
+    }
+  }
+  ...
+]
+```
 
 ## Public domain
 
