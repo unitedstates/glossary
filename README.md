@@ -37,12 +37,17 @@ For example, the prose definition for `definitions/congress/Cloture` is availabl
 
 Under the hood: whenever a contribution is accepted on the `master` branch, Github pings a small service that reads through each contribution and transforms it into a JSON file that is pushed to the project's `gh-pages` branch.
 
-The JSON file contains the glossary in various useful forms:
+Each JSON file contains a definition in various useful forms:
 
 * `short_definition` - plaintext, contains the first sentence of the entry.
 * `long_definition` - Markdown, contains the whole entry, as entered.
 * `long_definition_text` - plaintext, contains the whole entry, stripped of links.
 * `long_definition_html` - HTML, contains the whole entry, with links transformed into HTML.
+
+And any extra information, all optional:
+
+* `source` - Name of the source this definition was obtained or adapted from.
+* `source_url` - A URL for where this definition was obtained or adapted from.
 
 The code for this service, a small Node app optimized for deployment on Heroku, is also in this repository, in the [dat branch](/unitedstates/glossary/tree/dat).
 
