@@ -2,34 +2,33 @@
 
 This branch has a small Node application that automatically transforms prose definition contributions into data files.
 
-### Use
+Once configured, deployed, and set as a web hook in Github, this app will take care of syncing any contributions inside the `definitions` directory of the `master` branch as JSON equivalents on the `gh-pages` branch.
 
-> TBW
-
-### Setup and deployment
+### Setup
 
 First, register a new OAuth token from Github, tied to the user or organization that runs the glossary project this is meant to integrate with. e.g., for `unitedstates/glossary`, you register an application with the `unitedstates` organization.
 
-#### Local or non-Heroku deployment
+You can configure the app by **either**:
 
-Then, copy `config.js.example` to `config.js`, and fill in the following fields:
+* copying `config.js.example` to `config.js` and filling in fields (lower case below). Good for local or traditional deployment.
+* **not** creating a `config.js`, and using environment variables (upper case below). Good for Heroku or other PaaS deployment.
 
-* `github_token`: Your OAuth token you registered with Github above.
-* `committer_name`: Full name to attach to commits this app makes.
-* `committer_email`: Email address to attach to commits this app makes.
+The fields you definitely need to fill in are:
 
-If you're using a fork or have otherwise changed the setup, you may need to change the following fields:
+* `github_token`/`GITHUB_TOKEN`: Your OAuth token you registered with Github above.
+* `committer_name`/`COMMITTER_NAME`: Full name to attach to commits this app makes.
+* `committer_email`/`COMMITTER_EMAIL`: Email address to attach to commits this app makes.
 
-* `owner`: The user or organization handle owning the repository, e.g. `unitedstates`
-* `repository`: The name of the repository, e.g. `glossary`
-* `from_branch`: The branch with prose definitions, e.g. `master`
-* `to_branch`: The branch with data definitions, e.g. `gh-pages`
+You may want to change the following fields:
 
-#### Heroku Deployment
+* `owner` / `OWNER`: The user or organization handle owning the repository, defaults to `unitedstates`
+* `repository` / `REPOSITORY`: The name of the repository, defaults to `glossary`
+* `from_branch` / `FROM_BRANCH`: The branch with prose definitions, defaults to `master`
+* `to_branch` / `TO_BRANCH`: The branch with data definitions, defaults to `gh-pages`
 
-Instead of using `config.js`, set 7 environment variables:
+You can also change the port it runs on using a `port` field in `config.js`, or a `PORT`.
 
-> TBW
+#### Heroku
 
 This project is in the `dat` branch, so when deploying to Heroku, run:
 
@@ -38,3 +37,21 @@ git push heroku dat:master
 ```
 
 This will push this repository's `dat` branch to Heroku's `master` branch, which will trigger the deploy.
+
+#### Local testing
+
+I found testing easiest by forking the repository, and using a convenient tunnelling service like [ngrok](https://ngrok.com/) to make a port on my development machine (my laptop) accessible to the public Internet. Then I added the URL ngrok created to my fork's webhooks and could easily test during development.
+
+### Regenerating data
+
+You can use the `/refresh` endpoint with a `path` parameter to trigger a reprocessing of every definition inside that path.
+
+For example, visiting:
+
+```bash
+/refresh?path=definitions/congress
+```
+
+Will trigger a regeneration of each definition inside `definitions/congress`.
+
+This is not recursive - it will only affect definitions directly inside the given directory.

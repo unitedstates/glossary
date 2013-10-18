@@ -5,10 +5,11 @@ if (fs.existsSync("./config.js"))
   config = require('./config');
 else {
   config.github_token = process.env.GITHUB_TOKEN;
-  config.owner = process.env.OWNER;
-  config.repository = process.env.REPOSITORY;
   config.committer_name = process.env.COMMITTER_NAME;
   config.committer_email = process.env.COMMITTER_EMAIL;
+
+  config.owner = process.env.OWNER || 'unitedstates';
+  config.repository = process.env.REPOSITORY || 'glossary';
   config.from_branch = process.env.FROM_BRANCH || 'master';
   config.to_branch = process.env.TO_BRANCH || 'gh-pages';
 }
