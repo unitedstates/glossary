@@ -35,7 +35,9 @@ For example, the prose definition for `definitions/congress/Cloture` is availabl
 
 > http://unitedstates.github.io/glossary/definitions/congress/Cloture.json
 
-Under the hood: whenever a contribution is accepted on the `master` branch, Github pings a small service that reads through each contribution and transforms it into a JSON file that is pushed to the project's `gh-pages` branch.
+Under the hood: whenever a contribution is accepted on the `master` branch, Github pings a small service that reads through each contributed definition and transforms them into JSON files that are pushed to the project's `gh-pages` branch.
+
+The code for this service, a small Node app optimized for deployment on Heroku, is also in this repository, in the [dat branch](/unitedstates/glossary/tree/dat).
 
 Each JSON file contains a definition in various useful forms:
 
@@ -49,8 +51,6 @@ And any extra information, all optional:
 * `source` - Name of the source this definition was obtained or adapted from.
 * `source_url` - A URL for where this definition was obtained or adapted from.
 
-The code for this service, a small Node app optimized for deployment on Heroku, is also in this repository, in the [dat branch](/unitedstates/glossary/tree/dat).
-
 ### Branches
 
 This project has 3 entirely separate branches:
@@ -63,13 +63,13 @@ This project has 3 entirely separate branches:
 
 You can use the Github Repo Contents API to easily introspect on what definitions are available, and how the `gh-pages` branch is laid out. These are public URLs, you don't need to authenticate with Github.
 
-This URL lists the main directories definitions are sorted into:
+This URL lists the main directories that definitions are sorted into:
 
 ```
 https://api.github.com/repos/unitedstates/glossary/contents/definitions?ref=gh-pages
 ```
 
-And this this URL lists all the definitions in the `congress` directory:
+This URL lists all the definitions in the `congress` directory:
 
 ```
 https://api.github.com/repos/unitedstates/glossary/contents/definitions/congress?ref=gh-pages
@@ -94,21 +94,6 @@ In both cases, you'll get an array of results, where each result's `name` field 
       "html": "https://github.com/unitedstates/glossary/blob/gh-pages/definitions/congress/Adjourn.json"
     }
   },
-  {
-    "name": "Amendment.json",
-    "path": "definitions/congress/Amendment.json",
-    "sha": "17536f495a23cfbcb9f3a93e46e306ceae1ca7c9",
-    "size": 618,
-    "url": "https://api.github.com/repos/unitedstates/glossary/contents/definitions/congress/Amendment.json?ref=gh-pages",
-    "html_url": "https://github.com/unitedstates/glossary/blob/gh-pages/definitions/congress/Amendment.json",
-    "git_url": "https://api.github.com/repos/unitedstates/glossary/git/blobs/17536f495a23cfbcb9f3a93e46e306ceae1ca7c9",
-    "type": "file",
-    "_links": {
-      "self": "https://api.github.com/repos/unitedstates/glossary/contents/definitions/congress/Amendment.json?ref=gh-pages",
-      "git": "https://api.github.com/repos/unitedstates/glossary/git/blobs/17536f495a23cfbcb9f3a93e46e306ceae1ca7c9",
-      "html": "https://github.com/unitedstates/glossary/blob/gh-pages/definitions/congress/Amendment.json"
-    }
-  }
   ...
 ]
 ```
