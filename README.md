@@ -33,7 +33,7 @@ The glossary automatically takes definitions contributed as prose, and publishes
 
 For example, the prose definition for `definitions/congress/Cloture` is available at:
 
-> http://unitedstates.github.io/glossary/definitions/congress/Cloture.json
+> http://theunitedstates.io/glossary/definitions/congress/Cloture.json
 
 Under the hood: whenever a contribution is accepted on the `master` branch, Github pings a small service that reads through each contributed definition and transforms them into JSON files that are pushed to the project's `gh-pages` branch.
 
