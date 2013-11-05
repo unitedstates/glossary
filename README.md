@@ -10,9 +10,7 @@ Definitions are stored in text files, one per file. The name of the entry is the
 
 The first line is a short, single sentence definition. It should be possible to form a small, light glossary by using the first sentence of every entry.
 
-A longer definition can follow, with paragraphs separated by two line breaks.
-
-The longer definition can use links, but the text should hold up even if the links are stripped out. It should be possible to form a rich glossary using the full text of every entry, whether or not HTML is an option in the user's environment.
+A longer definition can follow, with paragraphs separated by two line breaks. The longer definition can use links (with Markdown), but the text should hold up even if the links are stripped out. It should be possible to form a rich glossary using the full plain text of every entry, even if formatting gets stripped out.
 
 ### For Example
 
