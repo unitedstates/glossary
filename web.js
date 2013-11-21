@@ -189,6 +189,9 @@ var createFile = function(path, from, done) {
 var updateFile = function(path, from, to, done) {
   console.log("Updating on " + to_branch + ": " + path);
 
+  if (!from.content)
+    console.log("No content?! " + util.inspect(from));
+
   var toContent = Glossary.transform(from.content);
 
   repo.update(to_branch, path, toContent, to.sha, "Updating " + path, function(err, data) {
