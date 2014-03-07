@@ -35,7 +35,7 @@ For example, the prose definition for `definitions/congress/Cloture` is availabl
 
 Under the hood: whenever a contribution is accepted on the `master` branch, Github pings a small service that reads through each contributed definition and transforms them into JSON files that are pushed to the project's `gh-pages` branch.
 
-The code for this service, a small Node app optimized for deployment on Heroku, is also in this repository, in the [dat branch](/unitedstates/glossary/tree/dat).
+The code for this service, a small Node app optimized for deployment on Heroku, is also in this repository, in the [dat branch](https://github.com/unitedstates/glossary/tree/dat).
 
 Each JSON file contains a definition in various useful forms:
 
