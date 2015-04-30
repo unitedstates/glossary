@@ -11,7 +11,7 @@ if [ "x${DICT_SET}" = "x" ]; then
 fi
 
 find definitions -type f | while read x; do
-    echo ":$(basename ${x}):"
+    echo ":$(basename "${x}"):"
     fmt "${x}" | sed 's/^/  /g'
     echo ""
 done
